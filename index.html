@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M&C Agentic Pattern Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6; /* UoB Light Grey */
+        }
+        /* Custom UoB Colors */
+        .uob-primary { color: #004789; } /* Existing UoB Blue */
+        .uob-secondary { color: #2883f6; } /* New Brand Blue */
+        .uob-accent { color: #e939bc; } /* New Brand Pink */
+
+        .uob-primary-bg { background-color: #004789; }
+        .uob-secondary-bg { background-color: #2883f6; }
+        .uob-accent-bg { background-color: #e939bc; }
+
+        .uob-primary-hover:hover { background-color: #003366; }
+        .uob-secondary-hover:hover { background-color: #1a6ac9; } /* Darker shade for hover */
+        .uob-accent-hover:hover { background-color: #cc25a3; } /* Darker shade for hover */
+
+        .code-box {
+            background-color: #1f2937; /* Gray 800 */
+            color: #f3f4f6; /* Gray 100 */
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: #4b5563; /* Gray 600 */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .copy-btn:hover {
+            background-color: #6b7280; /* Gray 500 */
+        }
+        .step-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .icon-small {
+            height: 24px; /* Adjust as needed */
+            width: 24px;  /* Adjust as needed */
+            vertical-align: middle;
+            margin-right: 0.5rem;
+            display: inline-block;
+            filter: invert(24%) sepia(87%) saturate(2228%) hue-rotate(204deg) brightness(97%) contrast(97%); /* To make the icons UoB blue for default */
+        }
+        .icon-list {
+            filter: invert(41%) sepia(93%) saturate(301%) hue-rotate(180deg) brightness(99%) contrast(92%); /* to make them green for contrast on the green background */
+            display: inline-block;
+            height: 20px;
+            width: 20px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto" id="app">
+        
+        <!-- Header --><div class="text-center mb-8">
+            <img src="https://upload.wikimedia.org/wikipedia/en/2/2f/University_of_Brighton_logo.svg" alt="University of Brighton Logo" class="mx-auto h-12 mb-4">
+            <h1 class="text-3xl md:text-4xl font-bold uob-primary">M&C Agentic Pattern Generator</h1>
+            <p class="text-gray-600 mt-2 text-lg">Your "magic recipe" for complex, high-value AI tasks. No design, just orchestration.</p>
+        </div>
+
+        <!-- Main Section --><div class="step-card">
+            
+            <!-- Explainer -->
+<div class="text-center p-6 bg-gray-50 rounded-lg">
+    <h2 class="text-2xl font-semibold text-gray-900">What is this?</h2>
+    <p class="text-gray-700 mt-2 max-w-3xl mx-auto">
+        This tool generates the <em>entire</em> “magic recipe” for our most powerful AI workflows.
+        <br><br>
+        It uses an <strong>‘Agent’ (the Gatherer)</strong> + a <strong>‘Specialist GPT’ (the Analyst)</strong>.
+        <br><br>
+        Your job is to be the <strong>‘Human Orchestrator’</strong> who just copies, pastes, and validates the handoff.
+    </p>
+</div>
+
+            <!-- Step 1: Select Pattern --><div class="mt-8">
+                <label for="pattern-select" class="block text-xl font-bold uob-primary text-center">Step 1: Choose Your Validated Pattern</label>
+                <select id="pattern-select" class="mt-2 block w-full max-w-md mx-auto p-3 border border-gray-300 rounded-lg shadow-sm text-lg focus:ring-2 focus:ring-[#2883f6]">
+                    <option value="newsletter">News Article -> LinkedIn Newsletter in <30mins </option>
+                    <option value="clearing">Competitor Intelligence -> Business Intelligence in <60mins </option>
+                    <option value="seo">Website Technical Health Check Audit -> Corrective Diagnostics in <30mins </option>
+                </select>
+            </div>
+
+            <!-- Step 2: Generate Kit --><div class="mt-6 text-center">
+                <button id="generate-btn" class="uob-secondary-bg text-white font-bold py-3 px-8 rounded-lg text-xl uob-secondary-hover transition shadow-lg">
+                    Generate My Orchestration Kit
+                </button>
+            </div>
+
+            <!-- Step 3: The Kit (Hidden by default) --><div id="kit-output" class="hidden animate__animated animate__fadeIn mt-10 border-t-2 border-gray-200 pt-8">
+                
+                <h2 class="text-3xl font-bold uob-primary text-center mb-6">Your Orchestration Kit is Ready</h2>
+
+                <!-- The "How-To" Checklist --><div class="mb-8">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Your 6-Step "Orchestrator's Checklist"</h3>
+                    <ol class="list-decimal list-inside space-y-3 text-gray-700 text-lg p-6 bg-green-50 border border-green-200 rounded-lg">
+                        <li>
+                            <img src="https://i.imgur.com/K3tJpYm.png" alt="Direction/journey icon" class="icon-list">
+                            In a new tab, open your <b class="text-green-700">'Specialist GPT' (Part 2)</b>. (Click "Copy Instructions," create a new Custom GPT, paste this into 'Instructions', then click 'Save'.)
+                        </li>
+                        <li>
+                            <img src="https://i.imgur.com/K3tJpYm.png" alt="Direction/journey icon" class="icon-list">
+                            In another tab, open ChatGPT and select <b class="text-green-700">'Agent Mode' (Part 1)</b>.
+                        </li>
+                        <li>
+                            <img src="https://i.imgur.com/dK1L3xK.png" alt="Quote/testimony icon" class="icon-list">
+                            Click to copy the <b class="text-green-700">'Agent Brief'</b> below and paste it into Agent Mode.
+                        </li>
+                        <li>
+                            <img src="https://i.imgur.com/Qh0Xn1j.png" alt="Collaboration/positivity icon" class="icon-list">
+                            <b>Validate the Agent's plan</b> when it presents it to you.
+                        </li>
+                        <li>
+                            <img src="https://i.imgur.com/dK1L3xK.png" alt="Quote/testimony icon" class="icon-list">
+                            When the Agent is done, <b class="text-green-700">copy its final JSON output</b>.
+                        </li>
+                        <li>
+                            <img src="https://i.imgur.com/K3tJpYm.png" alt="Direction/journey icon" class="icon-list">
+                            Go to your 'Specialist GPT' tab and <b class="text-green-700">paste the JSON</b>. Review the final artifact!
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- The Kit Artifacts --><div class="grid md:grid-cols-2 gap-8">
+                    <!-- Part 1: Agent Brief --><div>
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-3">Part 1: The 'Agent' (The Gatherer)</h3>
+                        <p class="text-gray-600 mb-3">Copy this brief and paste it into ChatGPT conversational interface and select option: Agent Mode.</p>
+                        <div class="code-box">
+                            <button class="copy-btn uob-accent-bg uob-accent-hover" onclick="copyToClipboard('agent-brief')">Copy</button>
+                            <pre id="agent-brief"></pre>
+                        </div>
+                    </div>
+
+                    <!-- Part 2: Specialist GPT --><div>
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-3">Part 2: The 'Specialist GPT' (The Analyst)</h3>
+                        <p class="text-gray-600 mb-3">Copy these instructions and paste them into a new Custom GPT system instrucitons panel.</p>
+                        <div class="code-box">
+                            <button class="copy-btn uob-accent-bg uob-accent-hover" onclick="copyToClipboard('gpt-instructions')">Copy</button>
+                            <pre id="gpt-instructions"></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- Database of Artifacts ---
+        const patterns = {
+            'newsletter': {
+                agentBrief: `YOUR MISSION: Act as a specialist M&C content gathering agent.
+YOUR GOAL: Crawl the University of Brighton newsroom URL provided and extract specific information for a LinkedIn newsletter.
+
+TASK:
+1.  You will be given a target URL (e.g., a specific news article on brighton.ac.uk/news).
+2.  Crawl the article.
+3.  You MUST extract the following information and present it ONLY as a valid JSON object matching the 'CONTRACT_SCHEMA'.
+4.  Do NOT analyze, summarize, or add any commentary. Your job is only to GATHER and PRESENT the data as JSON.
+5.  If data for a field is not present in the article, you MUST return 'no data'. Do not fabricate.
+6.  Before starting, present your multi-step plan to the Human Orchestrator for validation.
+7.  After generating the JSON, run a self-validation against the schema. Report 'Self-Validation: PASS' or 'Self-Validation: FAIL' to the orchestrator.
+
+CONTRACT_SCHEMA:
+{
+  "article_title": "string",
+  "original_url": "string",
+  "key_quote": "string (The single most impactful quote from the article)",
+  "three_key_takeaways": [
+    "string (takeaway 1)",
+    "string (takeaway 2)",
+    "string (takeaway 3)"
+  ],
+  "related_statistic": "string (A single, powerful stat or data point from the text, e.g., '£1.5 million in funding')"
+}
+
+Start mission by asking the Human Orchestrator for the target URL.
+`,
+                gptInstructions: `YOU ARE: The 'M&C LinkedIn Analyst', a specialist GPT.
+YOUR GOAL: To receive a JSON handoff from an 'Agent' and transform it into a high-quality, on-brand LinkedIn newsletter post for the University of Brighton.
+
+PROCESS:
+1.  You will be given a JSON object. First, you MUST validate this JSON against the 'CONTRACT_SCHEMA'.
+2.  If Validation = PASS, proceed to Step 3.
+3.  If Validation = FAIL, respond ONLY with: "HANDOFF FAILED VALIDATION. Please return this diagnostic to the Agent."
+4.  Once passed, ingest the data and write a 3-paragraph LinkedIn post.
+5.  The post MUST be engaging, professional, and align with the UoB brand voice (innovative, practical, community-focused).
+6.  It MUST skillfully weave in the 'key_quote', 'three_key_takeaways', and 'related_statistic'.
+7.  End with an open-ended question to drive engagement and include the 'original_url' as a "Read the full story" link.
+
+CONTRACT_SCHEMA:
+{
+  "article_title": "string",
+  "original_url": "string",
+  "key_quote": "string",
+  "three_key_takeaways": ["string", "string", "string"],
+  "related_statistic": "string"
+}
+`
+            },
+            // --- Other patterns can be added here ---
+            'clearing': {
+                agentBrief: `YOUR MISSION: Act as a specialist real-time competitor intelligence gathering agent for UoB Clearing.
+YOUR GOAL: Monitor specified competitor university websites for live updates to their Clearing 25 messaging, course availability, and unique selling propositions (USPs).
+
+TASK:
+1.  You will be given a list of competitor URLs (e.g., 'Competitor A Admissions Page', 'Competitor B Clearing Hub').
+2.  Crawl each URL once per hour for a 24-hour period (simulated).
+3.  For each crawl, extract the following information and present it ONLY as a valid JSON object (an array of objects if multiple sites are monitored) matching the 'CONTRACT_SCHEMA'.
+4.  Do NOT analyze or summarize. Your job is to GATHER and PRESENT raw, current data.
+5.  If data for a field is not present, return 'no data'. Do not fabricate.
+6.  Before starting, present your multi-step plan to the Human Orchestrator.
+7.  After each data extraction, run a self-validation against the schema. Report 'Self-Validation: PASS' or 'Self-Validation: FAIL'.
+
+CONTRACT_SCHEMA (for a single competitor):
+{
+  "competitor_name": "string",
+  "crawl_timestamp": "string (ISO 8601 format)",
+  "clearing_url": "string",
+  "key_messaging_changes": "string (Summary of any changes in core messaging)",
+  "newly_available_courses": ["string"],
+  "removed_courses": ["string"],
+  "unique_selling_points_highlighted": ["string"]
+}
+
+Start mission by asking the Human Orchestrator for the list of target competitor URLs.
+`,
+                gptInstructions: `YOU ARE: The 'UoB Clearing Intelligence Analyst', a specialist GPT.
+YOUR GOAL: To receive real-time competitor intelligence as JSON from an 'Agent' and transform it into an actionable, concise Clearing Intelligence Report for UoB M&C.
+
+PROCESS:
+1.  You will be given a JSON object (or array of objects). First, you MUST validate this JSON against the 'CONTRACT_SCHEMA'.
+2.  If Validation = PASS, proceed to Step 3.
+3.  If Validation = FAIL, respond ONLY with: "HANDOFF FAILED VALIDATION. Please return this diagnostic to the Agent for correction."
+4.  Once passed, ingest the data and generate a concise 'Clearing Intelligence Briefing' in markdown format.
+5.  The briefing MUST clearly highlight:
+    -   Key changes in competitor messaging.
+    -   New or removed course availability.
+    -   Evolving competitor USPs.
+6.  Conclude with 3-5 potential 'Actionable Insights' for UoB's own Clearing strategy based *only* on the provided data. Do not speculate beyond the data.
+
+CONTRACT_SCHEMA (for a single competitor):
+{
+  "competitor_name": "string",
+  "crawl_timestamp": "string",
+  "clearing_url": "string",
+  "key_messaging_changes": "string",
+  "newly_available_courses": ["string"],
+  "removed_courses": ["string"],
+  "unique_selling_points_highlighted": ["string"]
+}
+`
+            },
+            'seo': {
+                agentBrief: `YOUR MISSION: Act as a specialist M&C web crawler agent for UoB technical health and AI visibility.
+YOUR GOAL: Systematically crawl specified URLs on brighton.ac.uk to gather structured data on SEO and AI visibility factors.
+
+TASK:
+1.  You will be given a list of target URLs (e.g., 'brighton.ac.uk/study', 'brighton.ac.uk/news').
+2.  For each URL, crawl the page content.
+3.  You MUST extract the following information and present it ONLY as a valid JSON object (an array of objects if multiple URLs are provided) matching the 'CONTRACT_SCHEMA'.
+4.  Do NOT interpret or analyze. Your job is only to GATHER and PRESENT raw data.
+5.  If data for a field is not present, return 'no data'. Do not fabricate.
+6.  Before starting, present your multi-step plan to the Human Orchestrator.
+7.  After each data extraction, run a self-validation against the schema. Report 'Self-Validation: PASS' or 'Self-Validation: FAIL'.
+
+CONTRACT_SCHEMA (for a single URL):
+{
+  "page_url": "string",
+  "page_title": "string",
+  "meta_description": "string",
+  "h1_tag_content": "string",
+  "main_content_word_count": "number",
+  "ai_visibility_score_simulated": "number (A simulated score based on content density, keyword presence, structured data presence - 1-100)",
+  "internal_links_count": "number"
+}
+
+Start mission by asking the Human Orchestrator for the list of target URLs.
+`,
+                gptInstructions: `YOU ARE: The 'UoB Digital Health Analyst', a specialist GPT.
+YOUR GOAL: To receive structured web crawl data as JSON from an 'Agent' and transform it into actionable insights and recommendations for UoB website technical health and AI brand visibility.
+
+PROCESS:
+1.  You will be given a JSON object (or array of objects). First, you MUST validate this JSON against the 'CONTRACT_SCHEMA'.
+2.  If Validation = PASS, proceed to Step 3.
+3.  If Validation = FAIL, respond ONLY with: "HANDOFF FAILED VALIDATION. Please return this diagnostic to the Agent for correction."
+4.  Once passed, ingest the data and generate an 'M&C Digital Health Report' in markdown format.
+5.  The report MUST clearly highlight:
+    -   Key areas for technical SEO improvement (e.g., missing meta descriptions, duplicate H1s).
+    -   Opportunities to enhance AI brand visibility (e.g., improve content density, add structured data).
+6.  Conclude with 3-5 concrete, prioritized 'First Moves' (actionable recommendations) for optimization, based *only* on the provided data.
+
+CONTRACT_SCHEMA (for a single URL):
+{
+  "page_url": "string",
+  "page_title": "string",
+  "meta_description": "string",
+  "h1_tag_content": "string",
+  "main_content_word_count": "number",
+  "ai_visibility_score_simulated": "number",
+  "internal_links_count": "number"
+}
+`
+            }
+        };
+
+        // --- Event Listeners ---
+        const generateBtn = document.getElementById('generate-btn');
+        const patternSelect = document.getElementById('pattern-select');
+        const kitOutput = document.getElementById('kit-output');
+        const agentBriefEl = document.getElementById('agent-brief');
+        const gptInstructionsEl = document.getElementById('gpt-instructions');
+
+        generateBtn.addEventListener('click', () => {
+            const selectedPattern = patternSelect.value;
+            const data = patterns[selectedPattern];
+
+            // Populate the text areas
+            agentBriefEl.textContent = data.agentBrief;
+            gptInstructionsEl.textContent = data.gptInstructions;
+
+            // Show the kit
+            kitOutput.classList.remove('hidden');
+            kitOutput.classList.add('animate__fadeIn'); // Ensure animation plays
+            kitOutput.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        // --- Utility ---
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                // Find the button that was clicked
+                const button = document.querySelector(`[onclick="copyToClipboard('${elementId}')"]`);
+                if (button) {
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 1500);
+                }
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
